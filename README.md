@@ -6,7 +6,7 @@ Parallex is a fairly new JavaScript framework. Currently it only has a small bit
 
 # Usage
 
-##Getting Started
+## Getting Started
 
 Download the **parallex.js** file and import it with a script tag into your HTML, before your other scripts using Parallex:
 
