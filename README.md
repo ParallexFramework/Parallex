@@ -62,3 +62,26 @@ The JavaScript:
     })
     
     
+## Lists
+
+You can create quick lists using the `Parallex.list` method. Simply pass the list name and an options object to the method. The options object contains the element which is used as the list items and the list content. Lists are also reactive meaning you can easily update the lists by using array methods. For example:
+
+The HTML:
+
+    <ol>
+      <li class='list-item'></li>
+    </ol>
+    
+The JavaScript:
+
+    parallex.list('birthdaylist', {
+      elm: '.list-item',
+      content: [
+        'Steve: January, 19',
+        'John: April, 21',
+        'Mary: June, 30'
+      ]
+    })
+    
+    parallex.lists.birthdaylist.push('Emma: August, 14')
+
