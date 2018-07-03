@@ -24,7 +24,7 @@ Here's a simple example of the initialisation:
       elm: '#container'
     })
 
-##Reactive Template Engine
+## Reactive Template Engine
 
 Parallex has a simple template engine that works similar to most other JavaScript templating engines. You simply add a data object to your Parallex initialisation function and then specify the data variables inside your HTML to print out the corresponding values in their place. For example:
 
