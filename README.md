@@ -51,11 +51,11 @@ The content of the `div` will now be `John`.
 
 To add events to your elements using Parallex, simply use the `Parallex.event` method and add a `p-on` attribute to the elements you want to add the event to. This attribute's syntax is `event:handler`. Here is an example:
 
-    The HTML:
+The HTML:
     
     <button p-on='click:changeName'>Change Name To Mary</button>
 
-    The JavaScript:
+The JavaScript:
     
     parallex.event('changeName', function(){
         parallex.data.name = 'Mary'
