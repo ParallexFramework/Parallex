@@ -8,7 +8,7 @@ Parallex is a fairly new JavaScript framework. Currently it only has a small bit
 
 ## Getting Started
 
-Download the **parallex.js** file and import it with a script tag into your HTML, before your other scripts using Parallex:
+Download the **parallex.js** file and import it with a script tag into your HTML, before other scripts that use Parallex:
 
     <script src="parallex.js"></script>
     
@@ -43,6 +43,22 @@ Parallex has a simple template engine that works similar to most other JavaScrip
     
 The content of the `div` will then be `Steve`. The data object is also reactive, which means that when you update a value in the object, the HTML content will also update, for example:
 
-    Parallex.data.name = 'John'
+    parallex.data.name = 'John'
     
 The content of the `div` will now be `John`.
+
+## Events
+
+To add events to your elements using Parallex, simply use the `Parallex.event` method and add a `p-on` attribute to the elements you want to add the event to. This attribute's syntax is `event:handler`. Here is an example:
+
+    The HTML:
+    
+    <button p-on='click:changeName'>Change Name To Mary</button>
+
+    The JavaScript:
+    
+    parallex.event('changeName', function(){
+        parallex.data.name = 'Mary'
+    })
+    
+    
