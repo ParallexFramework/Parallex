@@ -22,10 +22,8 @@ var Parallex = function (options){
                                 **/
 
             // Quick array to list
-            list: function (object, run){
+            list: function (object){
                 var that = this;
-
-
 
                 if ( this.inElement ) {
                     that.doForElementList(that.inElement, function(element) {
@@ -34,6 +32,7 @@ var Parallex = function (options){
                         that.doForElementList(parent, function(parentNode){
                             parentNode.innerHTML = '';
                         });
+                        console.log(object);
                         if ( Array.isArray (object) ) {
                             object.forEach (function (value){
                                 if ( typeof value === 'string' ) {
@@ -50,7 +49,7 @@ var Parallex = function (options){
                         } else {
                             that.doForElementList(this.inElement, function(element) {
                                 that.doForElementList(parent, function(parentNode){
-                                    parentNode.appendChild(clone);
+                                    parentNode.appendChild(element);
                                 });
                             });
                         }
@@ -96,7 +95,7 @@ var Parallex = function (options){
                 function noWait(){
                     that[that.handleType].apply(that, that.handle);
                     that.arrayObserve(that.handle, function(changedHandle){
-                        that[that.handleType].apply(that, changedHandle);
+                        that[that.handleType].apply(that, [changedHandle]);
                     }, that);
                 }
 
