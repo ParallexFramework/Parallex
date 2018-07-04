@@ -17,6 +17,8 @@ var Parallex = function (options){
 
             waitTime: 0,
 
+            inElement: false,
+
             /**
                 Input Methods
                                 **/
@@ -26,33 +28,34 @@ var Parallex = function (options){
                 var that = this;
 
                 if ( this.inElement ) {
-                    that.doForElementList(that.inElement, function(element) {
-                        var parent = document.body.contains(element.parentNode) ?
-                                        element.parentNode: that.container;
-                        that.doForElementList(parent, function(parentNode){
-                            parentNode.innerHTML = '';
-                        });
-                        console.log(object);
-                        if ( Array.isArray (object) ) {
-                            object.forEach (function (value){
-                                if ( typeof value === 'string' ) {
-                                    var clone = element.cloneNode();
-                                    clone.innerHTML = value;
-
-                                    that.doForElementList(parent, function(parentNode){
-                                        parentNode.appendChild(clone);
-                                    });
-                                }
+                    this.doForElementList(that.container, function(container){
+                        that.doForElementList(that.inElement, function(element) {
+                            var parent = document.body.contains(element.parentNode) ?
+                                            element.parentNode: container;
+                            that.doForElementList(parent, function(parentNode){
+                                parentNode.innerHTML = '';
                             });
-                        } else if ( typeof object === 'object' ) {
+                            if ( Array.isArray (object) ) {
+                                object.forEach (function (value){
+                                    if ( typeof value === 'string' ) {
+                                        var clone = element.cloneNode();
+                                        clone.innerHTML = value;
 
-                        } else {
-                            that.doForElementList(this.inElement, function(element) {
-                                that.doForElementList(parent, function(parentNode){
-                                    parentNode.appendChild(element);
+                                        that.doForElementList(parent, function(parentNode){
+                                            parentNode.appendChild(clone);
+                                        });
+                                    }
                                 });
-                            });
-                        }
+                            } else if ( typeof object === 'object' ) {
+
+                            } else {
+                                that.doForElementList(this.inElement, function(element) {
+                                    that.doForElementList(parent, function(parentNode){
+                                        parentNode.appendChild(element);
+                                    });
+                                });
+                            }
+                        });
                     });
                 } else {
                     this.handleType = 'list';
@@ -68,9 +71,17 @@ var Parallex = function (options){
 
             // Set the element in which to change data
             in: function (element, run) {
-                element = this.getElementFromVariable(element);
+                elements = [];
 
-                this.inElement = element;
+                var that = this;
+
+                this.doForElementList(this.container, function(container){
+                    var elementFromVariable = that.getElementFromVariable(element, container),
+                        args = (Array.isArray(elementFromVariable) || that.isElementList(elementFromVariable)) ? elementFromVariable: [elementFromVariable];
+                    elements.push.apply(elements, args);
+                });
+
+                this.inElement = elements;
 
                 if (run)
                     this[this.handleType].apply(this, this.handle);
@@ -104,6 +115,17 @@ var Parallex = function (options){
                 } else {
                     noWait();
                 }
+
+                return this;
+            },
+
+            // Initialise the object again
+            init: function() {
+                this.inElement = '';
+                this.handle = '';
+                this.handleType = '';
+                this.container = this.getElementFromVariable(arguments[0], document.body);
+                this.waitTime = 0;
             },
 
             /**
@@ -116,10 +138,10 @@ var Parallex = function (options){
 
                 var element,
                     that = this;
-
                 this.doForElementList(container, function(container){
                     if ( typeof element === 'string' && this.regex.enclosedHTML.test(element) ) {
                         // Element is an HTML string, convert it to a node
+
                         clone = document.createElement('template');
                         clone.innerHTML = element;
                         /*that.doForElementList(clone.content.childNodes, function(node){
@@ -130,7 +152,8 @@ var Parallex = function (options){
                     } else if ( typeof element === 'string' && typeof document.querySelectorAll(element) === 'object' ) {
                         // ELement is a selector
                         element = container.querySelectorAll(element);
-
+                    } else if ( that.isElementList(element) ) {
+                        // Leave `element` as is
                     } else if (typeof element === 'object' && typeof element.nodeName === 'string' && typeof element.nodeType === 'number') {
                         // Leave `element` as is
                     } else {
@@ -146,13 +169,19 @@ var Parallex = function (options){
                 var that = this;
 
                 if ( typeof elements === 'object' &&
-                    /^\[object\s(HTMLCollection|NodeList)\]$/.test( Object.prototype.toString.call(elements) ) ) {
+                    (/^\[object\s(HTMLCollection|NodeList)\]$/.test( Object.prototype.toString.call(elements) ) ||
+                    Array.isArray(elements) ) ) {
                     elements.forEach(function (element) {
                         callback.apply(that, [element, elements]);
                     });
                 } else if ( typeof elements === 'object') {
                     callback.apply(that, [elements, elements]);
                 }
+            },
+
+            // Is something a list of elements/nodes?
+            isElementList: function(element){
+                return /^\[object\s(HTMLCollection|NodeList)\]$/.test( Object.prototype.toString.call(element) );
             },
 
             //Make an array observable
@@ -235,5 +264,5 @@ var Parallex = function (options){
         return final;
     }
 
-    return initialise;
+    return initialise.apply(this, arguments);
 }
