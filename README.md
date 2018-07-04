@@ -14,7 +14,7 @@ Download and import the `parallex.js` file in your HTML,
     
 and initialise the Parallex object.
 
-    var prl = new Parallex();
+    var prl = Parallex;
       
 ## Select Your Container
 
