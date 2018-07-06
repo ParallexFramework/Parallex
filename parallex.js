@@ -1,68 +1,3 @@
-<<<<<<< HEAD
-var Parallex = function (options){
-    var initialise = function (){
-        var final = {
-            // Object currently being handled
-            handle: '',
-
-            // Object type currently being handled
-            handleType: '',
-
-            // The main element containing everything that is happening
-            container: '',
-
-            // A few useful regular expressions
-            regex: {
-                enclosedHTML: /^<(.*)>$/
-            },
-
-            waitTime: 0,
-
-            inElement: false,
-
-            /**
-                Input Methods
-                                **/
-
-            // Quick array to list
-            list: function (object){
-                var that = this;
-
-                if ( this.inElement ) {
-                    this.doForElementList(that.container, function(container){
-                        that.doForElementList(that.inElement, function(element) {
-                            var parent = document.body.contains(element.parentNode) ?
-                                            element.parentNode: container;
-                            that.doForElementList(parent, function(parentNode){
-                                parentNode.innerHTML = '';
-                            });
-                            if ( Array.isArray (object) ) {
-                                object.forEach (function (value){
-                                    if ( typeof value === 'string' ) {
-                                        var clone = element.cloneNode();
-                                        clone.innerHTML = value;
-
-                                        that.doForElementList(parent, function(parentNode){
-                                            parentNode.appendChild(clone);
-                                        });
-                                    }
-                                });
-                            } else if ( typeof object === 'object' ) {
-
-                            } else {
-                                that.doForElementList(this.inElement, function(element) {
-                                    that.doForElementList(parent, function(parentNode){
-                                        parentNode.appendChild(element);
-                                    });
-                                });
-                            }
-                        });
-                    });
-                } else {
-                    this.handleType = 'list';
-                    this.handle = [object];
-                }
-=======
 function arrayObserve(array, callback, thisArg){
     if (Array.isArray(array)){
          var result = [];
@@ -162,7 +97,6 @@ var Parallex = function(options) {
             this.lastElement = element;
 
             var parentNode = element.parentNode;
->>>>>>> parent of 15e24d0... Update to new version
 
             if (!Array.isArray(options.content))
                 return this;
@@ -170,26 +104,10 @@ var Parallex = function(options) {
             var content = options.content,
                 contentDup = options.content;
 
-<<<<<<< HEAD
-            // Set the element in which to change data
-            in: function (element, run) {
-                elements = [];
-
-                var that = this;
-
-                this.doForElementList(this.container, function(container){
-                    var elementFromVariable = that.getElementFromVariable(element, container),
-                        args = (Array.isArray(elementFromVariable) || that.isElementList(elementFromVariable)) ? elementFromVariable: [elementFromVariable];
-                    elements.push.apply(elements, args);
-                });
-
-                this.inElement = elements;
-=======
             var currentContent = '';
 
             while (parentNode.firstChild)
                 parentNode.removeChild(parentNode.firstChild);
->>>>>>> parent of 15e24d0... Update to new version
 
             // Loop through the content
             var index = 0;
@@ -207,16 +125,7 @@ var Parallex = function(options) {
 
                 index++;
 
-<<<<<<< HEAD
-                function noWait(){
-                    that[that.handleType].apply(that, that.handle);
-                    that.arrayObserve(that.handle, function(changedHandle){
-                        that[that.handleType].apply(that, [changedHandle]);
-                    }, that);
-                }
-=======
             }
->>>>>>> parent of 15e24d0... Update to new version
 
             /*this.lists[name] = new Proxy(content, {
                 apply: function(target, thisArg, argumentsList) {
@@ -235,58 +144,7 @@ var Parallex = function(options) {
                     this.list(name, options);
                     return true;
                 }
-<<<<<<< HEAD
-
-                return this;
-            },
-
-            // Initialise the object again
-            init: function() {
-                this.inElement = '';
-                this.handle = '';
-                this.handleType = '';
-                this.container = this.getElementFromVariable(arguments[0], document.body);
-                this.waitTime = 0;
-            },
-
-            /**
-                Back-End Methods
-                                  **/
-
-            // Quickly convert any variable type to an element
-            getElementFromVariable: function (element, container) {
-                container = container || this.container;
-
-                var element,
-                    that = this;
-                this.doForElementList(container, function(container){
-                    if ( typeof element === 'string' && this.regex.enclosedHTML.test(element) ) {
-                        // Element is an HTML string, convert it to a node
-
-                        clone = document.createElement('template');
-                        clone.innerHTML = element;
-                        /*that.doForElementList(clone.content.childNodes, function(node){
-                            console.log(node);
-                            container.appendChild(node);
-                        });*/
-                        element = clone.content.childNodes;
-                    } else if ( typeof element === 'string' && typeof document.querySelectorAll(element) === 'object' ) {
-                        // ELement is a selector
-                        element = container.querySelectorAll(element);
-                    } else if ( that.isElementList(element) ) {
-                        // Leave `element` as is
-                    } else if (typeof element === 'object' && typeof element.nodeName === 'string' && typeof element.nodeType === 'number') {
-                        // Leave `element` as is
-                    } else {
-                        element = false;
-                    }
-                });
-
-                return element;
-            },
-=======
             });*/
->>>>>>> parent of 15e24d0... Update to new version
 
             if (!this.lists[name]){
                 this.lists[name] = content;
@@ -297,73 +155,10 @@ var Parallex = function(options) {
                 }, null);
             }
 
-<<<<<<< HEAD
-                if ( typeof elements === 'object' &&
-                    (/^\[object\s(HTMLCollection|NodeList)\]$/.test( Object.prototype.toString.call(elements) ) ||
-                    Array.isArray(elements) ) ) {
-                    elements.forEach(function (element) {
-                        callback.apply(that, [element, elements]);
-                    });
-                } else if ( typeof elements === 'object') {
-                    callback.apply(that, [elements, elements]);
-                }
-            },
-
-            // Is something a list of elements/nodes?
-            isElementList: function(element){
-                return /^\[object\s(HTMLCollection|NodeList)\]$/.test( Object.prototype.toString.call(element) );
-            },
-
-            //Make an array observable
-            arrayObserve: function(array, callback, thisArg){
-
-                thisArg = thisArg || null;
-
-                if (Array.isArray(array)){
-                     var result = [];
-                     result.push.apply(result, array);
-                 } else {
-                     var result = Object.assign({}, array);
-                 }
-
-                 var that = this;
-
-                function getterAndSetter() {
-                    if (Array.isArray(array))
-                        var currentArray = result;
-                    else
-                        var currentArray = Object.keys(result);
-                    currentArray.forEach( function(prop){
-                        if (Array.isArray(result))
-                            var currentProp = result.lastIndexOf(prop);
-                        else
-                            var currentProp = prop;
-
-                        /*if (typeof result[currentProp].tagName !== "undefined" && result[currentProp].tagName == "INPUT") {
-                            result[currentProp] = ' ';
-                            array[currentProp].addEventListener('keyup', function(){
-                                callback.call(thisArg, result);
-                                result[currentProp] = this.value;
-                            });
-                        } else {*/
-                        Object.defineProperty(array, currentProp, {
-                            configurable: true,
-                            enumerable: true,
-                            set: function(val) {
-                                result[currentProp] = val;
-                                callback.call(thisArg, result, currentProp);
-                            },
-                            get: function() {
-                                return result[currentProp];
-                            }
-                        });
-                        //}
-                        if (typeof result[currentProp] == 'object') {
-                            that.arrayObserve(result[currentProp], callback, result);
-                        }
-                    });
-=======
             return this;
+        },
+        testConditional: function(testString, values){
+            return new Function(...Object.keys(values), 'return ' + testString).apply(this, Object.values(values));
         },
         parseTemplate: function(){
             var that = this,
@@ -406,6 +201,57 @@ var Parallex = function(options) {
             });
             main.container.innerHTML = data;
 
+            function conditionals(dataVals){
+                document.querySelectorAll('[p-if]').forEach(function(conditional){
+                    var currentElement = conditional,
+                        test = that.testConditional(conditional.getAttribute('p-if'), dataVals),
+                        onlyElse = conditional.nextElementSibling.hasAttribute('p-else'),
+                        hasElseIf = conditional.nextElementSibling.hasAttribute('p-else-if');
+                    if (test) {
+                        conditional.style.display = '';
+                        if (onlyElse) {
+                            conditional.nextElementSibling.style.display = 'none';
+                        } else if (hasElseIf && currentElement.nextElementSibling !== null) {
+                            while(currentElement.nextElementSibling && currentElement.nextElementSibling.hasAttribute('p-elseif')) {
+                                currentElement = currentElement.nextElementSibling;
+                                currentElement.style.display = 'none';
+                            }
+                        }
+                    } else if (onlyElse) {
+                        conditional.style.display = 'none';
+                        conditional.nextElementSibling.style.display = '';
+                    } else if (hasElseIf) {
+                        var alreadyTrue = false;
+                        while(currentElement.nextElementSibling && currentElement.nextElementSibling.hasAttribute('p-elseif')) {
+                            currentElement = currentElement.nextElementSibling;
+                            if(!alreadyTrue){
+                                test = that.testConditional(currentElement.getAttribute('p-elseif'), dataVals);
+                                onlyElse = currentElement.nextElementSibling && currentElement.nextElementSibling.hasAttribute('p-else');
+                                if (test) {
+                                    alreadyTrue = true;
+                                    conditional.style.display = 'none';
+                                    currentElement.style.display = '';
+                                    if (onlyElse) {
+                                        currentElement.nextElementSibling.style.display = 'none';
+                                    }
+                                } else if (onlyElse) {
+                                    currentElement.style.display = 'none';
+                                    currentElement.nextElementSibling.style.display = 'none';
+                                } else {
+                                    currentElement.style.display = 'none';
+                                }
+                            } else {
+                                currentElement.style.display = 'none';
+                            }
+                        }
+                    } else {
+                        conditional.style.display = 'none';
+                    }
+                });
+            }
+
+            conditionals(this.data);
+
             arrayObserve(that.data, function(result, property){
                 if(property) {
                     var attributeToReplace = attributesToReplace[property];
@@ -413,8 +259,8 @@ var Parallex = function(options) {
                         var element = document.querySelector('[p-attributes=' + attributeToReplace.element + ']');
                         element.setAttribute(attributeToReplace.attribute, result[property]);
                     }
->>>>>>> parent of 15e24d0... Update to new version
                 }
+                conditionals(result);
                 replaceData(result);
             }, null);
         },
@@ -436,12 +282,7 @@ var Parallex = function(options) {
         }
     }
 
-<<<<<<< HEAD
-    return initialise.apply(this, arguments);
-}
-=======
     main.parseTemplate();
 
     return main;
 };
->>>>>>> parent of 15e24d0... Update to new version
