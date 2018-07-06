@@ -53,10 +53,27 @@ To add events to your elements using Parallex, simply use the `Parallex.event` m
 
 The HTML:
     
-    <button p-on='click:changeName'>Change Name To Mary</button>
+    <button p-on='click:changeName'>Change name to Mary.</button>
 
 The JavaScript:
     
     parallex.event('changeName', function(){
         parallex.data.name = 'Mary'
     })
+
+## Conditional Elements
+
+You can make elements be shown or hidden based on whether a statement evaluates to true by using the `p-if` and `p-else` attributes, for example:
+
+The HTML:
+
+    <span p-if='name=="John"'>The name's John.span>
+    <span p-else>The name's something else.</span>
+
+If the global value of `name` or the Parallex data value of `name` is equal to `Jacques`, the first span will be visible and the second hidden, otherwise the second span will be visible and the first hidden. Let's change the value of `name` to something else after one second:
+
+    setTimeout(function() {
+      parallex.data.name = 'Jordan'
+    }, 1000);
+    
+As you can see the first span will now be hidden and the second span will be made visible.
