@@ -32,6 +32,7 @@ To create a list in your container execute the `list` method containing the list
     
     container.list(fruits).in('<span class='list-item'></span>').run();
     
+<<<<<<< HEAD
 The `in` method can contain a selector, an `HTMLElement` or `Node` object or even an HTML string. The output of the above would be something like the following,
 
     <your-container-element id='container'>
@@ -44,4 +45,6 @@ The array is also reactive, meaning that when you update it, the HTML will also 
     fruits.push('Orange');
 
 As you can see the `fruits` array has been changed and so has the HTML content inside the container, adding the an orange to the list.
+=======
+>>>>>>> parent of d8cb0ee... Update README.md
     
