@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title></title>
+
+        <link rel="preload" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" crossorigin="anonymous">
+        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="dracula.css">
+        <script src="parallex.min.js" charset="utf-8"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/javascript.min.js" charset="utf-8"></script>
+    </head>
+    <body>
+        <nav>
+            <a href='/' id='logo'><img src='parallex.png'/></a>
+            <ul>
+                <li class="nav-item"></li>
+            </ul>
+        </nav>
+        <section id='one'>
+            <div id='mid'>
+                <h1 id='heading'>Parallex</h1>
+                <h2 id='subheading'>The Modern JavaScript Framework</h2>
+            </div>
+        </section>
+        <section id='two'>
+            stuff
+        </section>
+
+        <script>
+            var nav = [
+                "<a href='/docs'>Documentation</a>",
+                "<a href='/examples'>Examples</a>"
+            ];
+
+            var p = new Parallex({
+                data: []
+            });
+
+            p.list('nav', {
+                elm: '.nav-item',
+                content: nav
+            });
+        </script>
+    </body>
+</html>
